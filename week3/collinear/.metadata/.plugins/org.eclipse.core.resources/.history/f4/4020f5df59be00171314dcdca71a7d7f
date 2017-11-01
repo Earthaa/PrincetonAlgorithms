@@ -1,0 +1,106 @@
+import java.util.Arrays;
+import edu.princeton.cs.algs4.*;
+public class FastCollinearPoints {
+	private LineSegment[] resultsegements;
+	private int n=0;
+	 public FastCollinearPoints(Point[] points)
+	 {
+		 n=0;
+		 if(points == null)
+			 throw new IllegalArgumentException();
+		 for(int i=0;i<points.length;i++)
+			 if(points[i] == null)
+				 throw new IllegalArgumentException();
+		 Arrays.sort(points);
+		   if(points.length>1)
+		   {
+			   for(int i=0;i<points.length-1;i++)
+				   if(points[i].compareTo(points[i+1])==0)
+					   throw new IllegalArgumentException();
+		   }
+		 LineSegment[] tmp = new LineSegment[points.length];
+		 Point[] tmppoints = new Point[points.length];
+		 for(int i=0;i<points.length;i++)
+			 tmppoints[i]=points[i];		 	 
+		 for(int i=0;i<points.length;i++)
+		 {
+			 Arrays.sort(tmppoints);
+			 Arrays.sort(tmppoints,points[i].slopeOrder());
+			
+			 int cnt=1;
+			 double slope=Double.NEGATIVE_INFINITY;
+			 double falseslope = Double.NEGATIVE_INFINITY;
+			 for(int j=1;j<tmppoints.length;j++)
+			 {			
+				if(tmppoints[0].slopeTo(tmppoints[j])==slope)
+				 {
+					 cnt++;		 
+				 }
+				 else if(tmppoints[0].slopeTo(tmppoints[j])!=slope)
+				 {				 
+					 if(cnt>=4)
+					 {		
+						 tmp[n]=new LineSegment(tmppoints[0],tmppoints[j-1]);
+						 ++n;					 
+					 }
+					 cnt=1;
+					 if(tmppoints[0].compareTo(tmppoints[j])<0&&tmppoints[0].slopeTo(tmppoints[j])!=falseslope)
+					 {
+						 slope=tmppoints[0].slopeTo(tmppoints[j]);
+						 cnt++;
+					 }
+					 else if(tmppoints[0].slopeTo(tmppoints[j])!=falseslope&&tmppoints[0].compareTo(tmppoints[j])>0)
+						 falseslope=tmppoints[0].slopeTo(tmppoints[j]);
+				 }
+				if(j==tmppoints.length-1&&cnt>=4)
+				{
+					 tmp[n]=new LineSegment(tmppoints[0],tmppoints[j]);
+					 ++n;
+				}
+					
+			 }					 
+		 }
+		 resultsegements=new LineSegment[n];
+		 for(int i=0;i<n;++i)
+			 resultsegements[i]=tmp[i];	
+	 }// finds all line segments containing 4 or more points
+	 public int numberOfSegments()
+	 {
+		 return n;
+	 }// the number of line segments
+	 public LineSegment[] segments()
+	 {
+		 
+		 return resultsegements;
+	 }// the line segments
+	 public static void main(String[] args) {
+
+		    // read the n points from a file
+		    In in = new In("grid6x6.txt");
+		    int n = in.readInt();
+		    Point[] points = new Point[n];
+		    for (int i = 0; i < n; i++) {
+		        int x = in.readInt();
+		        int y = in.readInt();
+		        points[i] = new Point(x, y);
+		    }
+
+		    // draw the points
+		    StdDraw.enableDoubleBuffering();
+		    StdDraw.setXscale(0, 32768);
+		    StdDraw.setYscale(0, 32768);
+		    for (Point p : points) {
+		        p.draw();
+		    }
+		    StdDraw.show();
+
+		    // print and draw the line segments
+		    FastCollinearPoints collinear = new FastCollinearPoints(points);
+		    for (LineSegment segment : collinear.segments()) {
+		        StdOut.println(segment);
+		        segment.draw();
+		    }
+		    StdDraw.show();
+		}
+
+}

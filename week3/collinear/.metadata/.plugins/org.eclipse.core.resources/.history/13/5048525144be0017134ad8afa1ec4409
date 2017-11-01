@@ -1,0 +1,94 @@
+import java.util.Arrays;
+import edu.princeton.cs.algs4.*;
+public class FastCollinearPoints {
+	private LineSegment[] resultsegements;
+	private int n=0;
+	 public FastCollinearPoints(Point[] points)
+	 {
+		 if(points == null)
+			 throw new IllegalArgumentException();
+		 for(int i=0;i<points.length;i++)
+			 if(points[i] == null)
+				 throw new IllegalArgumentException();
+		 Arrays.sort(points);
+		 LineSegment[] tmp = new LineSegment[points.length];
+		 Point[] tmppoints = new Point[points.length];
+		 for(int i=0;i<points.length;i++)
+			 tmppoints[i]=points[i];		 	 
+		 for(int i=0;i<points.length;i++)
+		 {
+			 Arrays.sort(tmppoints);
+			 Arrays.sort(tmppoints,points[i].slopeOrder());
+			 if(tmppoints[0].slopeTo(tmppoints[1])==Double.NEGATIVE_INFINITY)
+				 throw new IllegalArgumentException();
+			 int cnt=0;
+			 double slope=Double.NEGATIVE_INFINITY;
+			 double falseslope = Double.NEGATIVE_INFINITY;
+			 for(int j=1;j<tmppoints.length;j++)
+			 {
+				
+				if(tmppoints[0].slopeTo(tmppoints[j])==slope)
+				 {
+					 cnt++;		 
+				 }
+				 else if(tmppoints[0].slopeTo(tmppoints[j])!=slope)
+				 {				 
+					 if(cnt>=4)
+					 {		
+						 tmp[n]=new LineSegment(tmppoints[0],tmppoints[j-1]);
+						 ++n;					 
+					 }
+					 cnt=0;
+					 if(tmppoints[0].compareTo(tmppoints[j])<0)
+					 {
+						 slope=tmppoints[0].slopeTo(tmppoints[j]);
+						 cnt++;
+					 }
+					 else if(tmppoints[0].slopeTo(tmppoints[j])!=falseslope)
+						 falseslope=tmppoints[0].slopeTo(tmppoints[j]);
+				 }
+			 }					 
+		 }
+		 resultsegements=new LineSegment[n];
+		 for(int i=0;i<n;++i)
+			 resultsegements[i]=tmp[i];	
+	 }// finds all line segments containing 4 or more points
+	 public int numberOfSegments()
+	 {
+		 return n;
+	 }// the number of line segments
+	 public LineSegment[] segments()
+	 {
+		 return resultsegements;
+	 }// the line segments
+	 public static void main(String[] args) {
+
+		    // read the n points from a file
+		    In in = new In("input8.txt");
+		    int n = in.readInt();
+		    Point[] points = new Point[n];
+		    for (int i = 0; i < n; i++) {
+		        int x = in.readInt();
+		        int y = in.readInt();
+		        points[i] = new Point(x, y);
+		    }
+
+		    // draw the points
+		    StdDraw.enableDoubleBuffering();
+		    StdDraw.setXscale(0, 32768);
+		    StdDraw.setYscale(0, 32768);
+		    for (Point p : points) {
+		        p.draw();
+		    }
+		    StdDraw.show();
+
+		    // print and draw the line segments
+		    FastCollinearPoints collinear = new FastCollinearPoints(points);
+		    for (LineSegment segment : collinear.segments()) {
+		        StdOut.println(segment);
+		        segment.draw();
+		    }
+		    StdDraw.show();
+		}
+
+}

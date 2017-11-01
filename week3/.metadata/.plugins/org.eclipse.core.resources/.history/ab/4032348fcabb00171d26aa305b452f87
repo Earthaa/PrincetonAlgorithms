@@ -1,0 +1,5 @@
+package colinear;
+
+public class Point implements Comparable<T> {
+
+}

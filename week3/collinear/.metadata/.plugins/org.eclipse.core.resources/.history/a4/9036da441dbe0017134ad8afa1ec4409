@@ -1,0 +1,15 @@
+import java.util.Arrays;
+
+import edu.princeton.cs.algs4.*;
+public class test {
+
+	public static void main(String[] args) {
+		int[] A={4,2,1,3};
+		int[] B=A;
+		Arrays.sort(B);
+		for(int i=0;i<A.length;++i)
+			StdOut.println(A[i]);
+
+	}
+
+}

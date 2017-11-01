@@ -1,0 +1,45 @@
+import java.util.Arrays;
+
+public class FastCollinearPoints {
+	private LineSegment[] resultsegements;
+	private int n=0;
+	 public FastCollinearPoints(Point[] points)
+	 {
+		 if(points == null)
+			 throw new IllegalArgumentException();
+		 for(int i=0;i<points.length;i++)
+			 if(points[i] == null)
+				 throw new IllegalArgumentException();
+		 Arrays.sort(points);
+		 LineSegment[] tmp = new LineSegment[n];
+		 Point[] tmppoints = points;
+		 for(int i=0;i<points.length;i++)
+		 {
+			 Arrays.sort(tmppoints);
+			 Arrays.sort(tmppoints,points[i].slopeOrder());
+			 if(tmppoints[0].slopeTo(tmppoints[1])==Double.NEGATIVE_INFINITY)
+				 throw new IllegalArgumentException();
+			 int cnt=0;
+			 double slope;
+			 double falseslope;
+			 for(int j=1;j<tmppoints.length;j++)
+			 {
+				 if()
+				 if(cnt==0)
+				 {
+					 slope=tmppoints[0].slopeTo(tmppoints[j]);
+					 cnt++;
+				 }
+			 }
+		 }
+		  
+	 }// finds all line segments containing 4 or more points
+	 public int numberOfSegments()
+	 {
+		 return n;
+	 }// the number of line segments
+	 public LineSegment[] segments()
+	 {
+		 return resultsegements;
+	 }// the line segments
+}

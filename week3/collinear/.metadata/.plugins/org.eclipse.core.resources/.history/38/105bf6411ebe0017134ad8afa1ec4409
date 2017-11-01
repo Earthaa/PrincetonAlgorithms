@@ -1,0 +1,20 @@
+import java.util.Arrays;
+
+import edu.princeton.cs.algs4.*;
+public class test {
+
+	public static void main(String[] args) {
+		Point p1=new Point(1,2);
+		Point p2=new Point(-1,3);
+		Point p3=new Point(7,2);
+		Point p4=new Point(4,1);
+	
+		Point[] A={p1,p2,p3,p4};
+		Point[] B=A;
+		Arrays.sort(B);
+		for(int i=0;i<A.length;++i)
+			StdOut.println(A[i].toString());
+
+	}
+
+}
