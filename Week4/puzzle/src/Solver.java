@@ -47,12 +47,15 @@ public class Solver {
     			if(ini.GetBoard().isGoal())
     			{
     				Solvable=true;
-    				do{
+    				do
+    				{
     				answer.push(ini.GetBoard());
     				ini=ini.predecessor;
-    				}while(ini!=null);
+    				}
+    				while(ini!=null);
     			break;
-    			}
+    		}
+    			
     			else if(twi.GetBoard().isGoal()){break;}
     			for(Board board:ini.GetBoard().neighbors())
     			{
@@ -86,7 +89,7 @@ public class Solver {
     public static void main(String[] args) {
 
         // create initial board from file
-        In in = new In("puzzle36.txt");
+        In in = new In("puzzle15.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
