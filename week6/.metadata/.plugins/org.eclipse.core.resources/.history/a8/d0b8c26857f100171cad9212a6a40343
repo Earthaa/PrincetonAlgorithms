@@ -1,0 +1,54 @@
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.StdIn;
+
+import java.util.HashMap;
+import java.util.Map;
+public class WordNet {
+   private Map<String,Integer> wordMap = null;
+   private Digraph wordGraph = null;
+   // constructor takes the name of the two input files
+   public WordNet(String synsets, String hypernyms)
+   {
+	   if(synsets == null || hypernyms == null)
+		   throw new java.lang.IllegalArgumentException();
+	   In readSynsets = new In(synsets);
+	   In readHypernyms = new In(hypernyms);
+	   wordMap = new HashMap<String,Integer>();
+	   int num =0;
+	   while(readSynsets.hasNextLine())
+	   {
+		   num ++;
+		   String synline = readSynsets.readLine();
+		   String[] fields = synline.split(",");
+		   String[] words = fields[1].split("\\s+");
+		   for(int i=0;i<words.length;i++)
+		   {
+			   wordMap.put(words[i], Integer.parseInt(fields[0]));
+		   }
+	   }
+	   wordGraph = new Digraph(num);
+	   while(readHypernyms.hasNextLine())
+	   {
+		   String hyperline = readHypernyms.readLine();
+		   String[] fields = hyperline.split(",");
+		   	   
+	   }
+   }
+
+   // returns all WordNet nouns
+   public Iterable<String> nouns()
+
+   // is the word a WordNet noun?
+   public boolean isNoun(String word)
+
+   // distance between nounA and nounB (defined below)
+   public int distance(String nounA, String nounB)
+
+   // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
+   // in a shortest ancestral path (defined below)
+   public String sap(String nounA, String nounB)
+
+   // do unit testing of this class
+   public static void main(String[] args)
+}

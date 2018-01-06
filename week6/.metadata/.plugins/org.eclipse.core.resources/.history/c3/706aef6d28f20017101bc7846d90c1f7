@@ -1,0 +1,134 @@
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Topological;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+
+public class WordNet {
+   private Map<Integer,Set<String>> integerwordMap = null;
+   private Map<String,Set<Integer>> wordintegerMap = null;
+   private Digraph wordGraph = null;
+   private SAP wordSAP = null;
+   // constructor takes the name of the two input files
+   private boolean graphTest(Digraph G)
+   {
+	   Topological test = new Topological(G);
+	   if(!test.hasOrder())
+		   return false;
+	   int root = 0;
+	   int dis = 0;
+	   BreadthFirstDirectedPaths GSearch = new BreadthFirstDirectedPaths(G,root);
+	   for(int i=0;i<G.V();i++)
+	   {
+		   if(GSearch.distTo(i)>dis)
+		   {
+			   root = i;
+			   dis = GSearch.distTo(i);
+		   }
+	   }
+	   Digraph GReverse = G.reverse();
+	   BreadthFirstDirectedPaths GRSearch = new BreadthFirstDirectedPaths(GReverse,root);
+	   StdOut.print(root);
+	   for(int i=0;i<G.V();i++)
+	   {
+		   if(!GRSearch.hasPathTo(i))
+			   return false;
+	   }
+	   return true;
+   }
+   public WordNet(String synsets, String hypernyms)
+   {
+	   if(synsets == null || hypernyms == null)
+		   throw new java.lang.IllegalArgumentException();
+	   In readSynsets = new In(synsets);
+	   In readHypernyms = new In(hypernyms);
+	   integerwordMap = new HashMap<Integer,Set<String>>();
+	   wordintegerMap = new HashMap<String,Set<Integer>>();
+	   while(readSynsets.hasNextLine())
+	   {
+		   String synline = readSynsets.readLine();
+		   String[] fields = synline.split(",");
+		   String[] words = fields[1].split("\\s+");
+		   Set<String> wordSet = new HashSet<String>();
+		   for(int i=0;i<words.length;i++)
+		   {
+			   wordSet.add(words[i]);
+			   if(wordintegerMap.containsKey(words[i]))
+			   {
+				   wordintegerMap.get(words[i]).add(Integer.parseInt(fields[0]));			   
+			   }
+			   else
+			   {
+				   Set<Integer> integerSet = new HashSet<Integer>();
+				   integerSet.add(Integer.parseInt(fields[0]));
+				   wordintegerMap.put(words[i], integerSet);
+			   }
+		   }
+		   integerwordMap.put(Integer.parseInt(fields[0]), wordSet);
+	   }
+	   wordGraph = new Digraph(integerwordMap.size());
+	   while(readHypernyms.hasNextLine())
+	   {
+		   String hyperline = readHypernyms.readLine();
+		   String[] fields = hyperline.split(",");
+		   for(int i=1;i<fields.length;i++)
+		   {
+			   wordGraph.addEdge(Integer.parseInt(fields[0]), Integer.parseInt(fields[1]));
+		   }
+	   }
+	
+	   if(!graphTest(wordGraph))
+		   throw new java.lang.IllegalArgumentException();
+	   wordSAP = new SAP(wordGraph);
+   }
+   // returns all WordNet nouns
+   public Iterable<String> nouns()
+   {
+	   return wordintegerMap.keySet();
+   }
+
+   // is the word a WordNet noun?
+   public boolean isNoun(String word)
+   {
+	   if(word == null)
+		   throw new java.lang.IllegalArgumentException();
+	   return wordintegerMap.containsKey(word);
+   }
+
+   // distance between nounA and nounB (defined below)
+   public int distance(String nounA, String nounB)
+   {
+	   if(!isNoun(nounA)||!isNoun(nounB))
+		   throw new java.lang.IllegalArgumentException();
+	   return wordSAP.length(wordintegerMap.get(nounA), wordintegerMap.get(nounB));
+   }
+
+   // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
+   // in a shortest ancestral path (defined below)
+   public String sap(String nounA, String nounB)
+   {
+	   if(!isNoun(nounA)||!isNoun(nounB))
+		   throw new java.lang.IllegalArgumentException();
+	   int ancestor = wordSAP.ancestor(wordintegerMap.get(nounA), wordintegerMap.get(nounB));
+	   String synsetString = "";
+	   for(String word:integerwordMap.get(ancestor))
+	   {
+		   synsetString+=word;
+		   synsetString+=" ";
+	   }
+	   return synsetString;   
+   }
+
+   // do unit testing of this class
+   public static void main(String[] args)
+   {
+	   WordNet wordnet = new WordNet("synsets.txt", "hypernyms.txt");
+	   StdOut.print(wordnet.wordintegerMap.size());
+	   
+   }
+}
