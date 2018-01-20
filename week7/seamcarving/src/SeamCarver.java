@@ -1,6 +1,5 @@
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Stopwatch;
-import edu.princeton.cs.algs4.Picture;
 import java.awt.Color;
 import java.util.Stack;
 public class SeamCarver {
@@ -216,9 +215,9 @@ public class SeamCarver {
     }// remove vertical seam from current picture
     
     public static void main(String[] args) {
-        Picture inputImg = new Picture("chameleon.png");
-        int removeColumns = 100;
-        int removeRows = 100;
+        Picture inputImg = new Picture("HJocean.png");
+        int removeColumns = 200;
+        int removeRows = 200;
         
         StdOut.printf("image is %d columns by %d rows\n", inputImg.width(), inputImg.height());
         SeamCarver sc = new SeamCarver(inputImg);
@@ -238,6 +237,7 @@ public class SeamCarver {
         StdOut.println("Resizing time: " + sw.elapsedTime() + " seconds.");
         inputImg.show();
         outputImg.show();
+        outputImg.save("1.jpg");
     }
     
 }
