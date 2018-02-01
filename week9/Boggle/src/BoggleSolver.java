@@ -30,25 +30,20 @@ public class BoggleSolver
 			Node result = root;
 			while(d != key.length())
 			{
-				if(x.next[key.charAt(d)-65] == null)
-					x.next[key.charAt(d)-65] = new Node();
-				x = x.next[key.charAt(d)-65];
+				if(x.next[key.charAt(d)%65] == null)
+					x.next[key.charAt(d)%65] = new Node();
+				x = x.next[key.charAt(d)%65];
 				d++;
 			}						
 			return result;
 		}
-//		private boolean contains(String key)
-//		{
-//			if(get(root,key,0) == null)
-//				return false;
-//			return true;
-//		}
+
 		private Node get(Node x,String key,int d)
 		{
 			while(x != null && d!=key.length()) 
 			{
 				 char c = key.charAt(d);
-			     x = x.next[c-65];
+			     x = x.next[c % 65];
 			     d++;
 			}
 		return x;

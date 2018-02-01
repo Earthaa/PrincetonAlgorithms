@@ -1,29 +1,3 @@
-/******************************************************************************
- *  Compilation:  javac BoggleGame.java
- *  Execution:    java BoggleGame [m n]
- *  Dependencies: BoggleSolver.java BoggleBoard.java 
- *  Author:       Matthew Drabick
- *
- *  GUI for the boggle solver. Pits the user against a computer opponent
- *  of various difficulties. Can be launched from the command line, where 
- *  the default size of the board for that game must be specified. 
- *  
- *  To add: Way to change the size of the board from inside the game
- *
- *  % javac BoggleGame.java
- *  
- *  % java BoggleGame 
- *
- *  % java -Xmx300m BoggleGame 3 7
- *  
- *  Report bugs to: wayne@princeton.edu, CC mdrabick@princeton.edu
- *
- *  Note: expect some compiler warning with Java 7 because
- *  javax.swing.JList is a parameterized type in Java 7 but not
- *  in Java 6.
- *
- ******************************************************************************/
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -384,31 +358,31 @@ public class BoggleGame extends JFrame {
         );
 
         // all words in shakespeare
-        In in1 = new In(new File("dictionary-shakespeare.txt"));
+        In in1 = new In("dictionary-shakespeare.txt");
         shakespeareDictionary = new SET<String>();
         for (String s : in1.readAllStrings())
             shakespeareDictionary.add(s);
 
         // all words in shakespeare
-        In in2 = new In(new File("dictionary-nursery.txt"));
+        In in2 = new In("dictionary-nursery.txt");
         nurseryDictionary = new SET<String>();
         for (String s : in2.readAllStrings())
             nurseryDictionary.add(s);
 
         // about 20K common words
-        In in3 = new In(new File("dictionary-common.txt"));
+        In in3 = new In("dictionary-common.txt");
         commonDictionary = new SET<String>();
         for (String s : in3.readAllStrings())
             commonDictionary.add(s);
 
         // all words in Algorithms 4/e
-        In in4 = new In(new File("dictionary-algs4.txt"));
+        In in4 = new In("dictionary-algs4.txt");
         algs4Dictionary = new SET<String>();
         for (String s : in4.readAllStrings())
             algs4Dictionary.add(s);
 
         // dictionary
-        In in = new In(new File("dictionary-yawl.txt"));
+        In in = new In("dictionary-yawl.txt");
         String[] dictionary = in.readAllStrings();
 
         // create the Boggle solver with the given dictionary
