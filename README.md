@@ -1,7 +1,8 @@
 # PrincetonAlgorithms
-##**This is my solution to the Programming Assignment in Algorithms given by Princeton University on Coursera**
 
-__Week 1 - Week 5 is Part1, Week 6 - Week 10 is Part 2__
+<font size = 18><b>This is my solution to the Programming Assignment in Algorithms given by Princeton University on Coursera</b></font>
+
+<font size = 16><b>Week 1 - Week 5 is Part1, Week 6 - Week 10 is Part 2</b></font>
 
 I got 93 points in Week 4 (failed in some memory test cases)
 
